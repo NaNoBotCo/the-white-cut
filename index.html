@@ -1,0 +1,858 @@
+<title>The White Cut</title>
+<meta name="description" content="Campaign site, booking book and cash ledger for The White Cut — a barber in Chiang Mai's Old City.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;900&family=Noto+Sans+Thai:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --bone:#EFEAE0;
+    --bone-2:#E4DDCF;
+    --ink:#0E0D0F;
+    --ink-soft:#26232A;
+    --steel:#8A8F98;
+    --hair:#CFC7B7;
+    --red:#E4001B;
+    --blue:#1B2AE8;
+    --water:#9FB6D6;
+    --green:#0E7A46;
+    --gutter: clamp(16px, 5vw, 84px);
+    --maxw: 1180px;
+    --fdisp:"Anton","Arial Narrow",sans-serif;
+    --fbody:"Archivo","Noto Sans Thai",system-ui,sans-serif;
+    --fmono:"Space Mono",ui-monospace,monospace;
+  }
+  html[lang="th"]{ --fbody:"Noto Sans Thai","Archivo",system-ui,sans-serif; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bone);color:var(--ink);font-family:var(--fbody);font-weight:500;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+  .mono{font-family:var(--fmono);text-transform:uppercase;letter-spacing:.16em;font-size:.72rem}
+  html[lang="th"] .mono{letter-spacing:.06em}
+  .disp{font-family:var(--fdisp);font-weight:400;line-height:.86;text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+  html[lang="th"] .disp{font-family:"Noto Sans Thai",var(--fdisp);font-weight:700;text-transform:none;line-height:1.05}
+
+  .pole{background-image:repeating-linear-gradient(-45deg,var(--red) 0 14px,var(--bone) 14px 28px,var(--ink) 28px 30px,var(--bone) 30px 44px);background-size:200% 200%;animation:poleflow 3.2s linear infinite}
+  @keyframes poleflow{from{background-position:0 0}to{background-position:0 -88px}}
+
+  header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:color-mix(in srgb,var(--bone) 88%,transparent);backdrop-filter:blur(8px);border-bottom:2px solid var(--ink)}
+  .bar .row{display:flex;align-items:center;justify-content:space-between;height:58px;gap:14px}
+  .brand{font-family:var(--fdisp);font-size:1.35rem;letter-spacing:.02em;display:flex;align-items:center;gap:10px;text-transform:uppercase}
+  .brand .stub{width:12px;height:26px;border:1.5px solid var(--ink)}
+  .bar nav{display:flex;gap:22px}
+  .bar nav a{font-family:var(--fmono);font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+  html[lang="th"] .bar nav a{font-family:var(--fbody);text-transform:none;letter-spacing:0;font-weight:700}
+  .bar nav a:hover{border-bottom-color:var(--red)}
+  .bar .right{display:flex;align-items:center;gap:12px}
+  .lang{font-family:var(--fmono);font-size:.66rem;font-weight:700;letter-spacing:.1em;background:none;border:2px solid var(--ink);padding:8px 10px;cursor:pointer}
+  .lang:hover{background:var(--ink);color:var(--bone)}
+  .bar .book{font-family:var(--fmono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;background:var(--ink);color:var(--bone);text-decoration:none;padding:10px 16px;white-space:nowrap}
+  html[lang="th"] .bar .book{font-family:var(--fbody);text-transform:none;letter-spacing:0}
+  .bar .book:hover{background:var(--red)}
+  @media(max-width:760px){.bar nav{display:none}}
+
+  .hero{position:relative;padding-block:clamp(40px,7vw,86px) clamp(48px,8vw,96px);overflow:hidden}
+  .hero .eyebrow{display:flex;gap:10px 14px;align-items:center;flex-wrap:wrap;margin-bottom:26px}
+  .hero .eyebrow .dot{width:9px;height:9px;background:var(--red);border-radius:50%;flex:none}
+  .hero h1{font-family:var(--fdisp);font-weight:400;text-transform:uppercase;line-height:.82;letter-spacing:0;font-size:clamp(3.6rem,15.5vw,12rem);margin:0}
+  .hero h1 .thru{position:relative;display:inline-block}
+  .hero h1 .thru::after{content:"";position:absolute;left:-2%;right:-2%;top:54%;height:clamp(6px,1.1vw,14px);background:var(--red);transform:rotate(-1.4deg)}
+  .hero .lede{max-width:32ch;font-size:clamp(1.05rem,2.4vw,1.5rem);font-weight:600;line-height:1.28;margin:30px 0 0}
+  .hero .lede b{color:var(--red)}
+  .hero .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px;align-items:center}
+  .btn{font-family:var(--fmono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:10px;padding:16px 26px;border:2px solid var(--ink);cursor:pointer;background:none;color:var(--ink);transition:transform .12s ease,background .12s ease,color .12s ease}
+  html[lang="th"] .btn{font-family:var(--fbody);text-transform:none;letter-spacing:0;font-weight:700}
+  .btn.solid{background:var(--ink);color:var(--bone)}
+  .btn.solid:hover{background:var(--red);border-color:var(--red);transform:translate(-2px,-2px)}
+  .btn.ghost:hover{background:var(--ink);color:var(--bone);transform:translate(-2px,-2px)}
+  .btn .arw{transition:transform .12s ease}
+  .btn:hover .arw{transform:translate(3px,-3px)}
+  .hero .polebar{position:absolute;top:-40px;bottom:-40px;right:calc(var(--gutter) * -0.1);width:clamp(46px,7vw,88px);border:2px solid var(--ink);transform:rotate(6deg);box-shadow:8px 8px 0 rgba(14,13,15,.14)}
+  .hero .blade{position:absolute;pointer-events:none;opacity:.9;right:9%;top:8%;width:min(30vw,300px);transform:rotate(-18deg)}
+  @media(max-width:820px){.hero .polebar{opacity:.3;right:-30px}.hero .blade{opacity:.24;top:auto;bottom:-4%;right:-6%}}
+
+  .marquee{border-block:3px solid var(--ink);background:var(--ink);color:var(--bone);overflow:hidden;padding-block:14px}
+  .marquee .track{display:flex;white-space:nowrap;width:max-content;animation:slide 24s linear infinite}
+  .marquee span{font-family:var(--fdisp);font-size:clamp(1.5rem,3.4vw,2.4rem);text-transform:uppercase;letter-spacing:.02em;padding-inline:26px;display:inline-flex;align-items:center;gap:26px}
+  html[lang="th"] .marquee span{font-family:var(--fbody);font-weight:700;text-transform:none}
+  .marquee span::after{content:"✕";color:var(--red);font-family:var(--fbody);font-size:.7em}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  section{padding-block:clamp(52px,8vw,110px)}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:38px;flex-wrap:wrap}
+  .sec-head .num{font-family:var(--fmono);font-size:.72rem;letter-spacing:.16em;color:var(--red)}
+  .sec-head h2{font-family:var(--fdisp);font-weight:400;text-transform:uppercase;line-height:.9;font-size:clamp(2.2rem,6vw,4.4rem);margin:0}
+  html[lang="th"] .sec-head h2{font-family:"Noto Sans Thai",sans-serif;font-weight:700;text-transform:none;line-height:1.1}
+
+  #cuts{background:var(--bone-2)}
+  .cut{display:grid;grid-template-columns:1fr auto;gap:6px 24px;align-items:baseline;padding:22px 0;border-top:2px solid var(--ink);position:relative}
+  .cut:last-child{border-bottom:2px solid var(--ink)}
+  .cut .name{font-family:var(--fdisp);font-size:clamp(1.5rem,4.2vw,2.5rem);text-transform:uppercase;line-height:.95}
+  html[lang="th"] .cut .name{font-family:"Noto Sans Thai",sans-serif;font-weight:700;text-transform:none;line-height:1.15}
+  .cut .price{font-family:var(--fmono);font-weight:700;font-size:clamp(1rem,2.4vw,1.4rem);white-space:nowrap}
+  .cut .desc{grid-column:1/2;font-size:.98rem;color:var(--ink-soft);max-width:52ch}
+  .cut .min{grid-column:2/3;justify-self:end;font-family:var(--fmono);font-size:.66rem;letter-spacing:.14em;color:var(--steel)}
+  .cut.star{background:var(--ink);color:var(--bone);margin-inline:calc(var(--gutter) * -0.4);padding-inline:calc(var(--gutter) * 0.4);border-color:var(--ink)}
+  .cut.star .price,.cut.star .name{color:var(--bone)}
+  .cut.star .desc{color:var(--bone-2)}
+  .cut.star .tag{position:absolute;top:-11px;left:calc(var(--gutter) * 0.4);background:var(--red);color:var(--bone);font-family:var(--fmono);font-weight:700;font-size:.6rem;letter-spacing:.16em;padding:4px 10px}
+  html[lang="th"] .cut.star .tag{font-family:var(--fbody);letter-spacing:0}
+  .cuts-foot{margin-top:22px;font-family:var(--fmono);font-size:.7rem;letter-spacing:.1em;color:var(--ink-soft)}
+  html[lang="th"] .cuts-foot{font-family:var(--fbody);letter-spacing:0}
+
+  #creed{position:relative;overflow:hidden}
+  .statement{font-family:var(--fdisp);font-weight:400;text-transform:uppercase;line-height:.92;font-size:clamp(2rem,7vw,5.4rem);max-width:18ch}
+  html[lang="th"] .statement{font-family:"Noto Sans Thai",sans-serif;font-weight:700;text-transform:none;line-height:1.12}
+  .statement b{color:var(--red)}
+  .statement .fade{color:var(--hair)}
+  #creed .strip{position:absolute;right:0;top:0;bottom:0;width:clamp(30px,5vw,64px);transform:skewX(-8deg)}
+
+  #visit{background:var(--ink);color:var(--bone)}
+  #visit .sec-head h2{color:var(--bone)}
+  .map-card{border:2px solid var(--bone);background:var(--bone);color:var(--ink);margin-bottom:clamp(24px,4vw,40px)}
+  .map-card svg{display:block;width:100%;height:auto}
+  .map-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-top:2px solid var(--ink);font-family:var(--fmono);font-size:.66rem;letter-spacing:.1em}
+  html[lang="th"] .map-foot{font-family:var(--fbody);letter-spacing:0}
+  .map-foot a{color:var(--red);text-decoration:none;font-weight:700}
+  .map-foot a:hover{text-decoration:underline}
+  .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px)}
+  @media(max-width:720px){.visit-grid{grid-template-columns:1fr}}
+  .vblock .k{font-family:var(--fmono);font-size:.68rem;letter-spacing:.16em;color:var(--red);margin-bottom:12px}
+  html[lang="th"] .vblock .k{font-family:var(--fbody);letter-spacing:0;font-weight:700}
+  .vblock .big{font-family:var(--fdisp);font-size:clamp(1.4rem,3.6vw,2.1rem);text-transform:uppercase;line-height:1}
+  html[lang="th"] .vblock .big{font-family:"Noto Sans Thai",sans-serif;font-weight:700;text-transform:none}
+  .hours{list-style:none;padding:0;margin:0;border-top:1px solid rgba(239,234,224,.24)}
+  .hours li{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid rgba(239,234,224,.16);font-size:.96rem}
+  .hours li.shut{color:var(--steel)}
+  .hours .t{font-family:var(--fmono);color:var(--bone)}
+  .addr{font-size:1.06rem;line-height:1.55;margin:2px 0 18px}
+  .visit-actions{display:flex;flex-wrap:wrap;gap:12px}
+  .btn.on-dark{border-color:var(--bone);color:var(--bone)}
+  .btn.on-dark:hover{background:var(--bone);color:var(--ink)}
+  .btn.on-dark.solid{background:var(--red);border-color:var(--red);color:var(--bone)}
+  .btn.on-dark.solid:hover{background:var(--bone);color:var(--ink)}
+  #copyNote{font-family:var(--fmono);font-size:.64rem;letter-spacing:.12em;color:var(--red);margin-top:10px;min-height:1em}
+
+  #book .book-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,5vw,60px);align-items:start}
+  @media(max-width:820px){#book .book-grid{grid-template-columns:1fr}}
+  .book-copy .statement{font-size:clamp(1.8rem,6vw,3.4rem)}
+  .book-copy p{max-width:36ch;color:var(--ink-soft);margin-top:18px}
+  form{display:grid;gap:18px}
+  .field{display:grid;gap:7px}
+  label{font-family:var(--fmono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase}
+  html[lang="th"] label{font-family:var(--fbody);letter-spacing:0;font-weight:700;text-transform:none}
+  input,select{font-family:var(--fbody);font-size:1rem;padding:14px;border:2px solid var(--ink);background:var(--bone);color:var(--ink);border-radius:0;width:100%}
+  input:focus,select:focus{outline:3px solid var(--red);outline-offset:2px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:520px){.two{grid-template-columns:1fr}}
+  .book-note{font-family:var(--fmono);font-size:.64rem;letter-spacing:.08em;color:var(--steel)}
+  html[lang="th"] .book-note{font-family:var(--fbody);letter-spacing:0}
+  #confirm{border:2px solid var(--ink);background:var(--ink);color:var(--bone);padding:30px;display:none}
+  #confirm.show{display:block}
+  #confirm h3{font-family:var(--fdisp);font-size:2rem;text-transform:uppercase;margin:0 0 12px;line-height:.95}
+  html[lang="th"] #confirm h3{font-family:"Noto Sans Thai",sans-serif;font-weight:700;text-transform:none}
+  #confirm .line{font-size:1rem;margin:6px 0}
+  #confirm .line span{color:var(--red);font-family:var(--fmono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-right:10px}
+  #confirm .small{font-family:var(--fmono);font-size:.64rem;letter-spacing:.08em;color:var(--steel);margin-top:18px}
+  html[lang="th"] #confirm .small{font-family:var(--fbody);letter-spacing:0}
+
+  footer{border-top:3px solid var(--ink);padding-block:38px}
+  .foot-row{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;flex-wrap:wrap}
+  .foot-brand{font-family:var(--fdisp);font-size:clamp(2.4rem,9vw,6rem);text-transform:uppercase;line-height:.82}
+  .foot-meta{font-family:var(--fmono);font-size:.66rem;letter-spacing:.1em;color:var(--ink-soft);text-align:right;line-height:1.9}
+  html[lang="th"] .foot-meta{font-family:var(--fbody);letter-spacing:0}
+  .foot-meta a{color:var(--red);text-decoration:none}
+  .foot-links{display:flex;gap:18px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+  .foot-links a{cursor:pointer}
+  .byline{margin-top:26px;font-family:var(--fmono);font-size:.6rem;letter-spacing:.14em;color:var(--steel)}
+
+  /* ---------- back office ---------- */
+  #shop{position:fixed;inset:0;z-index:80;background:var(--bone);overflow-y:auto;display:none}
+  #shop.show{display:block}
+  .shop-bar{position:sticky;top:0;z-index:2;background:var(--ink);color:var(--bone);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px clamp(16px,4vw,40px);border-bottom:3px solid var(--red)}
+  .shop-bar .title{font-family:var(--fdisp);font-size:1.3rem;text-transform:uppercase;letter-spacing:.02em;display:flex;align-items:center;gap:10px}
+  .shop-bar .title .stub{width:10px;height:22px}
+  .shop-close{background:none;border:2px solid var(--bone);color:var(--bone);font-family:var(--fmono);font-size:.66rem;font-weight:700;letter-spacing:.1em;padding:8px 12px;cursor:pointer}
+  .shop-close:hover{background:var(--red);border-color:var(--red)}
+  .shop-inner{max-width:960px;margin-inline:auto;padding:clamp(16px,4vw,32px)}
+  .tabs{display:flex;gap:0;border:2px solid var(--ink);margin-bottom:24px}
+  .tabs button{flex:1;font-family:var(--fmono);font-weight:700;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;background:none;border:none;padding:14px 8px;cursor:pointer;color:var(--ink);border-right:2px solid var(--ink)}
+  html[lang="th"] .tabs button{font-family:var(--fbody);letter-spacing:0;text-transform:none}
+  .tabs button:last-child{border-right:none}
+  .tabs button[aria-selected="true"]{background:var(--ink);color:var(--bone)}
+  .panel{display:none}
+  .panel.show{display:block}
+  .seed-note{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#F6E9Bf;border:2px solid var(--ink);padding:10px 14px;font-family:var(--fmono);font-size:.64rem;letter-spacing:.06em;margin-bottom:20px}
+  html[lang="th"] .seed-note{font-family:var(--fbody);letter-spacing:0}
+  .seed-note button{font-family:inherit;font-weight:700;font-size:.62rem;background:var(--ink);color:var(--bone);border:none;padding:6px 10px;cursor:pointer}
+  .tally{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+  @media(max-width:620px){.tally{grid-template-columns:repeat(2,1fr)}}
+  .tile{border:2px solid var(--ink);padding:14px}
+  .tile .lab{font-family:var(--fmono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  html[lang="th"] .tile .lab{font-family:var(--fbody);letter-spacing:0}
+  .tile .val{font-family:var(--fdisp);font-size:clamp(1.4rem,5vw,2.1rem);line-height:1;margin-top:6px;font-variant-numeric:tabular-nums}
+  .tile.in .val{color:var(--green)}
+  .tile.out .val{color:var(--red)}
+  .miniform{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;border:2px solid var(--ink);padding:14px;margin-bottom:22px;align-items:end}
+  .miniform .f{display:grid;gap:5px}
+  .miniform label{font-size:.58rem}
+  .miniform input,.miniform select{padding:10px}
+  .miniform .add{grid-column:span 12;justify-content:center}
+  .c3{grid-column:span 3}.c4{grid-column:span 4}.c6{grid-column:span 6}.c12{grid-column:span 12}
+  @media(max-width:640px){.c3,.c4,.c6{grid-column:span 6}}
+  @media(max-width:440px){.c3,.c4,.c6{grid-column:span 12}}
+  .rows{border:2px solid var(--ink)}
+  .rowhead,.row{display:grid;align-items:center}
+  .ap-grid{grid-template-columns:64px 1fr auto auto}
+  .lg-grid{grid-template-columns:78px 1fr 88px 88px 96px}
+  @media(max-width:560px){.lg-grid{grid-template-columns:64px 1fr 70px 70px}.lg-grid .bal{display:none}}
+  .rowhead{background:var(--ink);color:var(--bone);font-family:var(--fmono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase}
+  html[lang="th"] .rowhead{font-family:var(--fbody);letter-spacing:0}
+  .rowhead>*,.row>*{padding:11px 12px;border-right:1px solid rgba(14,13,15,.12)}
+  .rowhead>*:last-child,.row>*:last-child{border-right:none}
+  .row{border-top:2px solid var(--ink);font-size:.92rem}
+  .row .num{font-family:var(--fmono);text-align:right;font-variant-numeric:tabular-nums}
+  .row .in{color:var(--green)}.row .out{color:var(--red)}
+  .row .bal{font-family:var(--fmono);text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  .row .when{font-family:var(--fmono);font-size:.78rem;line-height:1.2}
+  .row .who{font-weight:600}
+  .row .svc{font-size:.78rem;color:var(--ink-soft)}
+  .pill{display:inline-block;font-family:var(--fmono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border:1.5px solid var(--ink)}
+  .pill.req{background:#F6E9BF}
+  .pill.conf{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .pill.done{background:var(--green);color:#fff;border-color:var(--green)}
+  .rowacts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .rowacts button{font-family:var(--fmono);font-size:.56rem;font-weight:700;letter-spacing:.04em;border:1.5px solid var(--ink);background:var(--bone);padding:5px 8px;cursor:pointer;white-space:nowrap}
+  .rowacts button:hover{background:var(--ink);color:var(--bone)}
+  .rowacts button.danger:hover{background:var(--red);border-color:var(--red)}
+  .empty{padding:26px;text-align:center;color:var(--steel);font-family:var(--fmono);font-size:.72rem;border-top:2px solid var(--ink)}
+  html[lang="th"] .empty{font-family:var(--fbody)}
+  .backup{margin-top:26px;border-top:2px dashed var(--hair);padding-top:18px}
+  .backup h4{font-family:var(--fmono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px}
+  html[lang="th"] .backup h4{font-family:var(--fbody);letter-spacing:0}
+  .backup textarea{width:100%;height:80px;font-family:var(--fmono);font-size:.72rem;border:2px solid var(--ink);padding:10px;background:var(--bone);color:var(--ink);resize:vertical}
+  .backup-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .backup-acts button{font-family:var(--fmono);font-size:.62rem;font-weight:700;letter-spacing:.06em;border:2px solid var(--ink);background:var(--bone);padding:8px 12px;cursor:pointer}
+  .backup-acts button:hover{background:var(--ink);color:var(--bone)}
+  #shopMsg{font-family:var(--fmono);font-size:.62rem;letter-spacing:.06em;color:var(--red);margin-top:8px;min-height:1em}
+  /* gate */
+  #gate{max-width:380px;margin:8vh auto 0;padding:0 20px;text-align:center}
+  #gate .lock{font-family:var(--fdisp);font-size:2.4rem;text-transform:uppercase;margin:0 0 6px}
+  html[lang="th"] #gate .lock{font-family:"Noto Sans Thai",sans-serif;font-weight:700;text-transform:none}
+  #gate p{font-family:var(--fmono);font-size:.68rem;letter-spacing:.06em;color:var(--ink-soft)}
+  html[lang="th"] #gate p{font-family:var(--fbody);letter-spacing:0}
+  #gate input{text-align:center;font-family:var(--fmono);font-size:1.4rem;letter-spacing:.4em;margin:14px 0}
+  #gateErr{color:var(--red);font-family:var(--fmono);font-size:.64rem;min-height:1em;margin-top:8px}
+
+  /* ---------- LINE OA button ---------- */
+  .btn.line{background:#06C755;border-color:#06C755;color:#fff}
+  .btn.line:hover{background:var(--ink);border-color:var(--ink);color:#fff;transform:translate(-2px,-2px)}
+  .book-or{font-family:var(--fmono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin:22px 0 6px}
+  html[lang="th"] .book-or{font-family:var(--fbody);letter-spacing:0}
+
+  @media (prefers-reduced-motion: reduce){.pole,.marquee .track,.pin-pulse *{animation:none}}
+</style>
+
+<header class="bar">
+  <div class="wrap row">
+    <div class="brand"><span class="stub pole"></span>THE WHITE CUT</div>
+    <nav>
+      <a href="#cuts" data-en="The Cuts" data-th="บริการ">The Cuts</a>
+      <a href="#creed" data-en="The Chair" data-th="เก้าอี้">The Chair</a>
+      <a href="#visit" data-en="Find Us" data-th="ที่ตั้ง">Find Us</a>
+    </nav>
+    <div class="right">
+      <button class="lang" id="langBtn" type="button" aria-label="Switch language">ไทย</button>
+      <a class="book" href="#book" data-en="Book ↗" data-th="จอง ↗">Book ↗</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="polebar pole" aria-hidden="true"></span>
+  <svg class="blade" viewBox="0 0 260 90" aria-hidden="true" fill="none">
+    <rect x="2" y="20" width="150" height="50" rx="4" fill="var(--steel)" stroke="var(--ink)" stroke-width="3"/>
+    <rect x="12" y="30" width="130" height="30" fill="var(--bone)" stroke="var(--ink)" stroke-width="2"/>
+    <circle cx="200" cy="45" r="20" fill="none" stroke="var(--ink)" stroke-width="3"/>
+    <line x1="152" y1="45" x2="180" y2="45" stroke="var(--ink)" stroke-width="3"/>
+    <line x1="20" y1="45" x2="134" y2="45" stroke="var(--red)" stroke-width="2"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow mono"><span class="dot"></span><span data-en="Barber · Old City · Chiang Mai" data-th="ร้านตัดผมชาย · เมืองเก่า · เชียงใหม่">Barber · Old City · Chiang Mai</span><span class="dot"></span><span data-en="Hai Ya · by Chiang Mai Gate" data-th="หายยา · ใกล้ประตูเชียงใหม่">Hai Ya · by Chiang Mai Gate</span></div>
+    <h1 class="disp">The<br><span class="thru">White</span><br>Cut</h1>
+    <p class="lede" data-html data-en="Thirty minutes in the chair. A <b>new animal</b> in the mirror. Sharper than the moat at noon." data-th="สามสิบนาทีบนเก้าอี้ ลุกขึ้นมาเป็น<b>คนใหม่</b>ในกระจก คมกว่าคูเมืองยามเที่ยง">Thirty minutes in the chair. A <b>new animal</b> in the mirror. Sharper than the moat at noon.</p>
+    <div class="cta-row">
+      <a class="btn solid" href="#book" data-html data-en="Take the chair <span class='arw'>↗</span>" data-th="ขึ้นเก้าอี้เลย <span class='arw'>↗</span>">Take the chair <span class="arw">↗</span></a>
+      <a class="btn ghost" href="#cuts" data-en="See the cuts" data-th="ดูบริการ">See the cuts</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true"><div class="track" id="marqueeTrack"></div></div>
+
+<!-- THE CUTS -->
+<section id="cuts">
+  <div class="wrap">
+    <div class="sec-head"><span class="num" data-en="01 / Menu" data-th="01 / เมนู">01 / Menu</span><h2 class="disp" data-en="The Cuts" data-th="บริการ &amp; ราคา">The Cuts</h2></div>
+
+    <div class="cut star">
+      <span class="tag" data-en="Signature" data-th="ซิกเนเจอร์">Signature</span>
+      <span class="name">The White Cut</span>
+      <span class="price">฿450</span>
+      <span class="desc" data-en="The full ritual — clipper &amp; scissor, hot towel, straight-razor line, cold-steel finish. You arrive tired. You leave dangerous." data-th="ครบทุกขั้นตอน — ปัตตาเลี่ยน+กรรไกร ผ้าร้อน เก็บขอบด้วยมีดโกน จบด้วยเหล็กเย็น เข้ามาเหนื่อย ออกไปคม">The full ritual — clipper &amp; scissor, hot towel, straight-razor line, cold-steel finish. You arrive tired. You leave dangerous.</span>
+      <span class="min" data-en="55 min" data-th="55 นาที">55 min</span>
+    </div>
+
+    <div class="cut">
+      <span class="name" data-en="Skin Fade" data-th="สกินเฟด">Skin Fade</span>
+      <span class="price">฿350</span>
+      <span class="desc" data-en="Zero to sharp. Blurred low, mid, or high — your call." data-th="ไล่จากศูนย์ให้คม เฟดต่ำ กลาง หรือสูง แล้วแต่คุณ">Zero to sharp. Blurred low, mid, or high — your call.</span>
+      <span class="min" data-en="40 min" data-th="40 นาที">40 min</span>
+    </div>
+
+    <div class="cut">
+      <span class="name" data-en="Scissor Cut" data-th="ตัดกรรไกร">Scissor Cut</span>
+      <span class="price">฿300</span>
+      <span class="desc" data-en="Length kept, weight lost. For the grown-out and the grown-up." data-th="เก็บความยาว ลดความหนา สำหรับผมยาวและคนโตแล้ว">Length kept, weight lost. For the grown-out and the grown-up.</span>
+      <span class="min" data-en="35 min" data-th="35 นาที">35 min</span>
+    </div>
+
+    <div class="cut">
+      <span class="name" data-en="Beard Sculpt" data-th="แต่งทรงหนวดเครา">Beard Sculpt</span>
+      <span class="price">฿250</span>
+      <span class="desc" data-en="Shaped, lined, oiled. A jaw with an argument." data-th="แต่งทรง เก็บขอบ ลงน้ำมัน กรามที่มีเรื่องจะพูด">Shaped, lined, oiled. A jaw with an argument.</span>
+      <span class="min" data-en="25 min" data-th="25 นาที">25 min</span>
+    </div>
+
+    <div class="cut">
+      <span class="name" data-en="Straight-Razor Shave" data-th="โกนหนวดมีดโกน">Straight-Razor Shave</span>
+      <span class="price">฿300</span>
+      <span class="desc" data-en="Steam, blade, silence. The oldest luxury there is." data-th="ไอน้ำ ใบมีด ความเงียบ ความหรูที่เก่าแก่ที่สุด">Steam, blade, silence. The oldest luxury there is.</span>
+      <span class="min" data-en="30 min" data-th="30 นาที">30 min</span>
+    </div>
+
+    <div class="cut">
+      <span class="name" data-en="The Quick One" data-th="ตัดไว">The Quick One</span>
+      <span class="price">฿180</span>
+      <span class="desc" data-en="One guard, one pass, out the door. No small talk billed." data-th="เบอร์เดียว รอบเดียว จบแล้วไป ไม่คิดค่าคุยเล่น">One guard, one pass, out the door. No small talk billed.</span>
+      <span class="min" data-en="15 min" data-th="15 นาที">15 min</span>
+    </div>
+
+    <div class="cut">
+      <span class="name" data-en="Father &amp; Son" data-th="พ่อลูก">Father &amp; Son</span>
+      <span class="price">฿600</span>
+      <span class="desc" data-en="Two chairs, one bloodline. Bring the boy." data-th="สองเก้าอี้ สายเลือดเดียว พาลูกชายมาด้วย">Two chairs, one bloodline. Bring the boy.</span>
+      <span class="min" data-en="60 min" data-th="60 นาที">60 min</span>
+    </div>
+
+    <p class="cuts-foot" data-en="Cash · PromptPay · card — Baht (฿). Walk-ins after 11:00 if a chair is free." data-th="เงินสด · พร้อมเพย์ · บัตร — บาท (฿) รับ walk-in หลัง 11:00 ถ้ามีเก้าอี้ว่าง">Cash · PromptPay · card — Baht (฿). Walk-ins after 11:00 if a chair is free.</p>
+  </div>
+</section>
+
+<!-- STATEMENT -->
+<section id="creed">
+  <span class="strip pole" aria-hidden="true"></span>
+  <div class="wrap">
+    <p class="statement disp" data-html data-en="No mirror <span class='fade'>lies</span> here. <b>Every head</b> leaves louder than it came." data-th="ที่นี่ไม่มีกระจก<span class='fade'>โกหก</span> <b>ทุกหัว</b>ออกไปดังกว่าตอนเข้ามา">No mirror <span class="fade">lies</span> here. <b>Every head</b> leaves louder than it came.</p>
+  </div>
+</section>
+
+<!-- VISIT -->
+<section id="visit">
+  <div class="wrap">
+    <div class="sec-head"><span class="num" data-en="02 / Find Us" data-th="02 / ที่ตั้ง">02 / Find Us</span><h2 class="disp" data-en="Old City. By the Moat." data-th="เมืองเก่า ริมคูเมือง">Old City. By the Moat.</h2></div>
+
+    <div class="map-card">
+      <svg viewBox="0 0 800 430" role="img" aria-label="Schematic map of Chiang Mai Old City with The White Cut marked at Si Don Chai, Hai Ya, just south of Chiang Mai Gate">
+        <rect x="0" y="0" width="800" height="430" fill="var(--bone-2)"/>
+        <!-- moat water ring -->
+        <rect x="150" y="60" width="500" height="320" fill="none" stroke="var(--water)" stroke-width="16"/>
+        <rect x="150" y="60" width="500" height="320" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <rect x="166" y="76" width="468" height="288" fill="none" stroke="var(--ink)" stroke-width="1.5" opacity=".5"/>
+        <!-- interior fill -->
+        <rect x="174" y="84" width="452" height="272" fill="var(--bone)"/>
+        <!-- streets -->
+        <g stroke="var(--ink)" stroke-width="2.4">
+          <line x1="180" y1="220" x2="620" y2="220"/><!-- Ratchadamnoen -->
+          <line x1="180" y1="140" x2="620" y2="140" opacity=".55"/><!-- Ratwithi -->
+          <line x1="180" y1="300" x2="620" y2="300" opacity=".55"/><!-- Ratchamanka -->
+          <line x1="210" y1="90" x2="210" y2="350"/><!-- Moon Muang (E, inner) -->
+          <line x1="400" y1="90" x2="400" y2="350" opacity=".55"/><!-- Phra Pok Klao -->
+          <line x1="560" y1="90" x2="560" y2="350" opacity=".4"/><!-- Samlan (W) -->
+        </g>
+        <!-- gates -->
+        <g fill="var(--ink)">
+          <rect x="388" y="52" width="24" height="16"/><!-- Chang Phuak N -->
+          <rect x="642" y="212" width="16" height="24"/><!-- Tha Phae E -->
+          <rect x="388" y="372" width="24" height="16"/><!-- Chiang Mai S -->
+          <rect x="142" y="212" width="16" height="24"/><!-- Suan Dok W -->
+        </g>
+        <!-- Wat Phra Singh -->
+        <g transform="translate(240,208)"><polygon points="0,-10 9,6 -9,6" fill="var(--ink)"/><rect x="-6" y="6" width="12" height="8" fill="var(--ink)"/></g>
+        <!-- Si Don Chai Rd (south, toward Hai Ya) -->
+        <line x1="400" y1="388" x2="470" y2="392" stroke="var(--ink)" stroke-width="2.4"/>
+        <line x1="470" y1="392" x2="520" y2="410" stroke="var(--ink)" stroke-width="2.4" opacity=".6"/>
+        <!-- shop pin at Hai Ya / Si Don Chai, just south of Chiang Mai Gate -->
+        <g transform="translate(470,384)">
+          <circle class="pin-pulse" cx="0" cy="0" r="20" fill="var(--red)" opacity=".22"><animate attributeName="r" values="14;24;14" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".28;0;.28" dur="2.4s" repeatCount="indefinite"/></circle>
+          <path d="M0,-16 C9,-16 16,-9 16,0 C16,11 0,24 0,24 C0,24 -16,11 -16,0 C-16,-9 -9,-16 0,-16 Z" fill="var(--red)" stroke="var(--ink)" stroke-width="2"/>
+          <circle cx="0" cy="-1" r="6" fill="var(--bone)"/>
+        </g>
+        <!-- labels -->
+        <g font-family="Space Mono, monospace" fill="var(--ink)">
+          <text x="486" y="360" font-size="12" font-weight="700" fill="var(--red)">The White Cut</text>
+          <text x="486" y="374" font-size="10" fill="var(--ink-soft)">Si Don Chai Rd · Hai Ya</text>
+          <text x="300" y="234" font-size="12">Ratchadamnoen Rd</text>
+          <text x="120" y="120" font-size="12" transform="rotate(-90 120 120)">Moon Muang Rd</text>
+          <text x="663" y="228" font-size="11">Tha Phae Gate</text>
+          <text x="340" y="44" font-size="11">Chang Phuak Gate</text>
+          <text x="300" y="404" font-size="11" text-anchor="end">Chiang Mai Gate</text>
+          <text x="18" y="228" font-size="11">Suan Dok Gate</text>
+          <text x="196" y="204" font-size="10">Wat Phra Singh</text>
+          <text x="700" y="70" font-size="11" fill="var(--water)">MOAT</text>
+        </g>
+        <!-- compass -->
+        <g transform="translate(60,60)" font-family="Space Mono, monospace"><line x1="0" y1="14" x2="0" y2="-14" stroke="var(--ink)" stroke-width="2"/><polygon points="0,-18 5,-8 -5,-8" fill="var(--red)"/><text x="-5" y="-22" font-size="12" font-weight="700" fill="var(--ink)">N</text></g>
+      </svg>
+      <div class="map-foot">
+        <span data-en="Schematic — not to scale" data-th="แผนผัง — ไม่ตามมาตราส่วน">Schematic — not to scale</span>
+        <a href="https://motdang.net" target="_blank" rel="noopener" data-en="Neighbourhood guide · motdang.net ↗" data-th="ไกด์ย่านนี้ · motdang.net ↗">Neighbourhood guide · motdang.net ↗</a>
+      </div>
+    </div>
+
+    <div class="visit-grid">
+      <div class="vblock">
+        <div class="k" data-en="The Shop" data-th="ที่ตั้งร้าน">The Shop</div>
+        <p class="addr" id="addr" data-html data-en="18 Si Don Chai Soi 2, Hai Ya<br>Mueang, Chiang Mai 50100<br>Thailand" data-th="18 ศรีดอนไชย ซอย 2 ต.หายยา<br>อ.เมือง เชียงใหม่ 50100<br>ประเทศไทย">18 Si Don Chai Soi 2, Hai Ya<br>Mueang, Chiang Mai 50100<br>Thailand</p>
+        <p class="addr" style="margin-top:-8px"><span class="k" style="display:block" data-en="Call / walk in" data-th="โทร / เดินเข้ามา">Call / walk in</span><a href="tel:+66990085361" style="color:var(--bone);text-decoration:none;font-family:var(--fmono)">099 008 5361</a></p>
+        <div class="visit-actions">
+          <a class="btn on-dark solid" href="https://www.google.com/maps/search/The+White+Cut+Barber+Si+Don+Chai+Chiang+Mai" target="_blank" rel="noopener" data-en="Open in Maps ↗" data-th="เปิดในแผนที่ ↗">Open in Maps ↗</a>
+          <button class="btn on-dark" type="button" id="copyAddr" data-en="Copy address" data-th="คัดลอกที่อยู่">Copy address</button>
+        </div>
+        <div id="copyNote" aria-live="polite"></div>
+      </div>
+      <div class="vblock">
+        <div class="k" data-en="Chair Hours" data-th="เวลาทำการ">Chair Hours</div>
+        <ul class="hours">
+          <li><span data-en="Tuesday – Friday" data-th="อังคาร – ศุกร์">Tuesday – Friday</span><span class="t">10:00 – 20:00</span></li>
+          <li><span data-en="Saturday – Sunday" data-th="เสาร์ – อาทิตย์">Saturday – Sunday</span><span class="t">09:00 – 21:00</span></li>
+          <li class="shut"><span data-en="Monday" data-th="จันทร์">Monday</span><span class="t" data-en="Closed — blades resting" data-th="ปิด — พักมีด">Closed — blades resting</span></li>
+        </ul>
+        <div class="k" style="margin-top:26px" data-en="LINE Official Account" data-th="ไลน์ออฟฟิเชียล">LINE Official Account</div>
+        <a class="big" href="https://line.me/R/ti/p/@thewhitecut" target="_blank" rel="noopener" style="text-decoration:none;color:#06C755">@thewhitecut ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section id="book">
+  <div class="wrap book-grid">
+    <div class="book-copy">
+      <div class="sec-head" style="margin-bottom:18px"><span class="num" data-en="03 / Book" data-th="03 / จอง">03 / Book</span></div>
+      <p class="statement disp" data-html data-en="Claim <b>a chair.</b>" data-th="จอง<b>เก้าอี้</b>">Claim <b>a chair.</b></p>
+      <p data-en="Chat straight to the shop's LINE Official Account — pick a cut, name a time, done. Or drop a request below and we reply on LINE." data-th="แชทตรงเข้าไลน์ออฟฟิเชียลของร้าน — เลือกบริการ บอกเวลา จบ หรือฝากคำขอไว้ด้านล่าง แล้วเราตอบกลับทางไลน์">Chat straight to the shop's LINE Official Account — pick a cut, name a time, done. Or drop a request below and we reply on LINE.</p>
+      <a class="btn line" href="https://line.me/R/ti/p/@thewhitecut" target="_blank" rel="noopener" style="margin-top:22px" data-en="Chat &amp; book on LINE ↗" data-th="แชท&amp;จองทางไลน์ ↗">Chat &amp; book on LINE ↗</a>
+    </div>
+    <div>
+      <p class="book-or" data-en="— or request a time —" data-th="— หรือฝากเวลาที่สะดวก —">— or request a time —</p>
+      <form id="bookForm" novalidate>
+        <div class="field"><label for="svc" data-en="Which cut" data-th="บริการ">Which cut</label><select id="svc" name="svc" required></select></div>
+        <div class="field"><label for="nm" data-en="Name" data-th="ชื่อ">Name</label><input id="nm" name="nm" type="text" autocomplete="name" data-en-ph="What we call you" data-th-ph="ให้เราเรียกว่าอะไร" required></div>
+        <div class="two">
+          <div class="field"><label for="dt" data-en="Day" data-th="วัน">Day</label><input id="dt" name="dt" type="date" required></div>
+          <div class="field"><label for="tm" data-en="Time" data-th="เวลา">Time</label><input id="tm" name="tm" type="time" required></div>
+        </div>
+        <div class="field"><label for="ln" data-en="LINE / phone to reply on" data-th="ไลน์ / เบอร์โทรติดต่อกลับ">LINE / phone to reply on</label><input id="ln" name="ln" type="text" data-en-ph="@handle or number" data-th-ph="@ไลน์ หรือเบอร์โทร" required></div>
+        <button class="btn solid" type="submit" style="justify-content:center" data-en="Hold my chair ↗" data-th="จองเลย ↗">Hold my chair ↗</button>
+        <p class="book-note" data-en="Wireframe — when connected, this request posts straight into the LINE Official Account (Messaging API / webhook) and the shop replies there. For now it saves on this device so you can see the flow." data-th="โครงร่าง — เมื่อเชื่อมระบบแล้ว คำขอนี้จะส่งเข้าไลน์ออฟฟิเชียลโดยตรง (Messaging API / webhook) และร้านจะตอบกลับที่นั่น ตอนนี้บันทึกไว้ในเครื่องนี้เพื่อให้เห็นการทำงาน">Wireframe — when connected, this request posts straight into the LINE Official Account.</p>
+      </form>
+      <div id="confirm" role="status" aria-live="polite">
+        <h3 data-en="Chair held." data-th="จองเก้าอี้แล้ว">Chair held.</h3>
+        <p class="line"><span data-en="Cut" data-th="บริการ">Cut</span><b id="cSvc"></b></p>
+        <p class="line"><span data-en="Name" data-th="ชื่อ">Name</span><b id="cNm"></b></p>
+        <p class="line"><span data-en="When" data-th="เมื่อ">When</span><b id="cWhen"></b></p>
+        <p class="line"><span data-en="Reply to" data-th="ติดต่อกลับ">Reply to</span><b id="cLn"></b></p>
+        <p class="small" data-en="We'll confirm on LINE within the hour. See you by the moat." data-th="เราจะยืนยันทางไลน์ภายในหนึ่งชั่วโมง เจอกันริมคูเมือง">We'll confirm on LINE within the hour. See you by the moat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="foot-brand disp">The<br>White<br>Cut</div>
+      <div class="foot-meta">
+        <span data-en="18 Si Don Chai Soi 2 · Hai Ya" data-th="18 ศรีดอนไชย ซอย 2 · หายยา">18 Si Don Chai Soi 2 · Hai Ya</span><br>
+        <span data-en="Chiang Mai 50100, Thailand" data-th="เชียงใหม่ 50100 ประเทศไทย">Chiang Mai 50100, Thailand</span><br>
+        <span data-en="Tue–Sun · 099 008 5361" data-th="อังคาร–อาทิตย์ · 099 008 5361">Tue–Sun · 099 008 5361</span>
+        <div class="foot-links">
+          <a href="https://instagram.com/thewhitecut_cnx" target="_blank" rel="noopener">Instagram ↗</a>
+          <a href="https://www.facebook.com/thewhitecut01" target="_blank" rel="noopener">Facebook ↗</a>
+          <a href="https://www.tiktok.com/@thewhitecut23" target="_blank" rel="noopener">TikTok ↗</a>
+        </div>
+        <div class="foot-links">
+          <a href="https://motdang.net" target="_blank" rel="noopener">motdang.net ↗</a>
+          <a id="staffLink" data-en="Staff" data-th="สำหรับร้าน">Staff</a>
+        </div>
+      </div>
+    </div>
+    <p class="byline">Campaign concept · Hongdam Studio · Chiang Rai</p>
+  </div>
+</footer>
+
+<!-- ================= BACK OFFICE ================= -->
+<div id="shop" aria-hidden="true">
+  <div class="shop-bar">
+    <div class="title"><span class="stub pole" style="display:inline-block"></span><span data-en="The White Cut — Shop" data-th="The White Cut — หลังร้าน">The White Cut — Shop</span></div>
+    <button class="shop-close" id="shopClose" type="button" data-en="Close ✕" data-th="ปิด ✕">Close ✕</button>
+  </div>
+
+  <!-- gate -->
+  <div id="gate" class="shop-inner">
+    <div class="lock" data-en="Staff only" data-th="เฉพาะพนักงาน">Staff only</div>
+    <p data-en="Enter the shop PIN to open the appointment book and the till." data-th="ใส่รหัสร้านเพื่อเปิดสมุดนัดและบัญชีเงินสด">Enter the shop PIN to open the appointment book and the till.</p>
+    <input id="pin" type="text" inputmode="numeric" maxlength="4" placeholder="••••" aria-label="Shop PIN">
+    <div id="gateErr"></div>
+    <button class="btn solid" id="pinBtn" type="button" style="justify-content:center;width:100%" data-en="Open the shop" data-th="เปิดร้าน">Open the shop</button>
+    <p style="margin-top:22px;color:var(--steel)" data-en="Demo PIN: 1122 — this is a soft gate, not real security." data-th="รหัสตัวอย่าง: 1122 — เป็นแค่ด่านเบื้องต้น ไม่ใช่ระบบความปลอดภัยจริง">Demo PIN: 1122 — this is a soft gate, not real security.</p>
+  </div>
+
+  <!-- back office body -->
+  <div id="office" class="shop-inner" hidden>
+    <div class="tabs">
+      <button id="tabAppt" aria-selected="true" data-en="Appointments" data-th="นัดหมาย">Appointments</button>
+      <button id="tabBooks" aria-selected="false" data-en="Books (till)" data-th="บัญชี (เงินสด)">Books (till)</button>
+    </div>
+
+    <div class="seed-note" id="seedNote">
+      <span data-en="Sample data loaded so you can see how it works." data-th="ใส่ข้อมูลตัวอย่างไว้ให้ดูวิธีใช้งาน">Sample data loaded so you can see how it works.</span>
+      <button id="clearSeed" type="button" data-en="Clear it all" data-th="ล้างทั้งหมด">Clear it all</button>
+    </div>
+
+    <!-- APPOINTMENTS -->
+    <div class="panel show" id="panelAppt">
+      <div class="miniform">
+        <div class="f c3"><label for="apDay" data-en="Day" data-th="วัน">Day</label><input id="apDay" type="date"></div>
+        <div class="f c3"><label for="apTime" data-en="Time" data-th="เวลา">Time</label><input id="apTime" type="time"></div>
+        <div class="f c3"><label for="apName" data-en="Name" data-th="ชื่อ">Name</label><input id="apName" type="text" data-en-ph="Customer" data-th-ph="ลูกค้า"></div>
+        <div class="f c3"><label for="apSvc" data-en="Cut" data-th="บริการ">Cut</label><select id="apSvc"></select></div>
+        <button class="btn solid add" id="apAdd" type="button" data-en="Add to the book +" data-th="เพิ่มลงสมุดนัด +">Add to the book +</button>
+      </div>
+      <div class="rows">
+        <div class="rowhead ap-grid"><span data-en="When" data-th="เมื่อ">When</span><span data-en="Customer / cut" data-th="ลูกค้า / บริการ">Customer / cut</span><span data-en="Status" data-th="สถานะ">Status</span><span></span></div>
+        <div id="apList"></div>
+      </div>
+    </div>
+
+    <!-- BOOKS -->
+    <div class="panel" id="panelBooks">
+      <div class="tally">
+        <div class="tile in"><div class="lab" data-en="In today" data-th="รับวันนี้">In today</div><div class="val" id="tIn">฿0</div></div>
+        <div class="tile out"><div class="lab" data-en="Out today" data-th="จ่ายวันนี้">Out today</div><div class="val" id="tOut">฿0</div></div>
+        <div class="tile"><div class="lab" data-en="Net today" data-th="สุทธิวันนี้">Net today</div><div class="val" id="tNet">฿0</div></div>
+        <div class="tile"><div class="lab" data-en="In the till" data-th="เงินในลิ้นชัก">In the till</div><div class="val" id="tBal">฿0</div></div>
+      </div>
+      <div class="miniform">
+        <div class="f c3"><label for="lgDay" data-en="Date" data-th="วันที่">Date</label><input id="lgDay" type="date"></div>
+        <div class="f c4"><label for="lgMemo" data-en="Detail" data-th="รายการ">Detail</label><input id="lgMemo" type="text" data-en-ph="What for" data-th-ph="รายการอะไร"></div>
+        <div class="f c3"><label for="lgAmt" data-en="Amount ฿" data-th="จำนวน ฿">Amount ฿</label><input id="lgAmt" type="number" min="0" step="1" inputmode="numeric"></div>
+        <div class="f c3"><label for="lgKind" data-en="In / Out" data-th="รับ / จ่าย">In / Out</label><select id="lgKind"><option value="in" data-en="Money in" data-th="เงินเข้า">Money in</option><option value="out" data-en="Money out" data-th="เงินออก">Money out</option></select></div>
+        <div class="f c3"><label for="lgMethod" data-en="Method" data-th="ช่องทาง">Method</label><select id="lgMethod"><option value="cash" data-en="Cash" data-th="เงินสด">Cash</option><option value="promptpay" data-en="PromptPay" data-th="พร้อมเพย์">PromptPay</option><option value="card" data-en="Card" data-th="บัตร">Card</option></select></div>
+        <button class="btn solid add" id="lgAdd" type="button" data-en="Write it in +" data-th="ลงบัญชี +">Write it in +</button>
+      </div>
+      <div class="rows">
+        <div class="rowhead lg-grid"><span data-en="Date" data-th="วันที่">Date</span><span data-en="Detail" data-th="รายการ">Detail</span><span class="num" data-en="In" data-th="รับ">In</span><span class="num" data-en="Out" data-th="จ่าย">Out</span><span class="bal" data-en="Balance" data-th="คงเหลือ">Balance</span></div>
+        <div id="lgList"></div>
+      </div>
+    </div>
+
+    <div class="backup">
+      <h4 data-en="Backup / move to another device" data-th="สำรองข้อมูล / ย้ายไปเครื่องอื่น">Backup / move to another device</h4>
+      <textarea id="backupBox" spellcheck="false" aria-label="Backup data"></textarea>
+      <div class="backup-acts">
+        <button id="btnExport" type="button" data-en="Copy backup" data-th="คัดลอกข้อมูล">Copy backup</button>
+        <button id="btnImport" type="button" data-en="Load from box" data-th="โหลดจากกล่อง">Load from box</button>
+      </div>
+      <div id="shopMsg" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var LS = {
+    get:function(k,f){ try{ var v=localStorage.getItem(k); return v==null?f:JSON.parse(v);}catch(e){return f;} },
+    set:function(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); return true;}catch(e){return false;} },
+    raw:function(k){ try{ return localStorage.getItem(k);}catch(e){return null;} }
+  };
+
+  /* ---------- services (single source) ---------- */
+  var SERVICES = [
+    {id:"whitecut", en:"The White Cut", th:"The White Cut", price:450, min:55},
+    {id:"fade",     en:"Skin Fade",     th:"สกินเฟด",        price:350, min:40},
+    {id:"scissor",  en:"Scissor Cut",   th:"ตัดกรรไกร",      price:300, min:35},
+    {id:"beard",    en:"Beard Sculpt",  th:"แต่งทรงหนวดเครา", price:250, min:25},
+    {id:"shave",    en:"Straight-Razor Shave", th:"โกนหนวดมีดโกน", price:300, min:30},
+    {id:"quick",    en:"The Quick One", th:"ตัดไว",          price:180, min:15},
+    {id:"fatherson",en:"Father & Son",  th:"พ่อลูก",         price:600, min:60}
+  ];
+  var SVC = {}; SERVICES.forEach(function(s){ SVC[s.id]=s; });
+
+  /* ---------- language ---------- */
+  var lang = LS.get('twc_lang','en'); if(lang!=='th') lang='en';
+  function svcLabel(s){ return (lang==='th'?s.th:s.en) + " — ฿" + s.price; }
+  function fillSvcSelect(sel){ if(!sel) return; var cur=sel.value; sel.innerHTML=""; SERVICES.forEach(function(s){ var o=document.createElement('option'); o.value=s.id; o.textContent=svcLabel(s); sel.appendChild(o); }); if(cur) sel.value=cur; }
+  function buildMarquee(){
+    var t=document.getElementById('marqueeTrack'); if(!t) return;
+    var wEn=["Skin Fade","Hot Towel","Straight Razor","Beard Sculpt","Cold Finish","The White Cut"];
+    var wTh=["สกินเฟด","ผ้าร้อน","มีดโกน","แต่งหนวด","จบเย็น","The White Cut"];
+    var words=(lang==='th'?wTh:wEn); var html="";
+    for(var r=0;r<2;r++){ words.forEach(function(w){ html+="<span>"+w+"</span>"; }); }
+    t.innerHTML=html;
+  }
+  function applyLang(){
+    document.documentElement.lang=lang;
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      var v=el.getAttribute('data-'+lang); if(v==null) return;
+      if(el.hasAttribute('data-html')) el.innerHTML=v; else el.textContent=v;
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      var v=el.getAttribute('data-'+lang+'-ph'); if(v!=null) el.placeholder=v;
+    });
+    var lb=document.getElementById('langBtn'); if(lb) lb.textContent=(lang==='th'?'EN':'ไทย');
+    fillSvcSelect(document.getElementById('svc'));
+    fillSvcSelect(document.getElementById('apSvc'));
+    buildMarquee();
+    renderAppts(); renderLedger();
+  }
+  document.getElementById('langBtn').addEventListener('click',function(){ lang=(lang==='th'?'en':'th'); LS.set('twc_lang',lang); applyLang(); });
+
+  /* ---------- date helpers ---------- */
+  function todayISO(){ try{ var d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10);}catch(e){return "";} }
+  function fmtDate(iso){ if(!iso) return ""; try{ var d=new Date(iso+"T00:00:00"); return d.toLocaleDateString(lang==='th'?'th-TH':'en-GB',{day:'numeric',month:'short',weekday:'short'}); }catch(e){ return iso; } }
+  function fmtBaht(n){ return "฿"+(Math.round(n||0)).toLocaleString('en-US'); }
+  function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+  /* ---------- public booking form ---------- */
+  var dt=document.getElementById('dt'); if(dt){ try{ var d=new Date(); d.setDate(d.getDate()+1); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); dt.value=d.toISOString().slice(0,10); dt.min=todayISO(); }catch(e){} }
+  var tm=document.getElementById('tm'); if(tm && !tm.value) tm.value="14:00";
+
+  var copyBtn=document.getElementById('copyAddr'), copyNote=document.getElementById('copyNote'), addrEl=document.getElementById('addr');
+  copyBtn.addEventListener('click',function(){
+    var text=addrEl.innerText.replace(/\n+/g,', ');
+    var ok=function(){ copyNote.textContent=(lang==='th'?'✓ คัดลอกแล้ว':'✓ Copied'); setTimeout(function(){copyNote.textContent="";},2200); };
+    var fb=function(){ try{ var r=document.createRange(); r.selectNodeContents(addrEl); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); copyNote.textContent=(lang==='th'?'เลือกแล้ว กด ⌘/Ctrl+C':'Selected — press ⌘/Ctrl+C'); }catch(e){ copyNote.textContent=text; } };
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok).catch(fb);} else fb();
+  });
+
+  var form=document.getElementById('bookForm'), confirmEl=document.getElementById('confirm');
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    var svcId=document.getElementById('svc').value, s=SVC[svcId];
+    var nm=document.getElementById('nm').value.trim(), ln=document.getElementById('ln').value.trim();
+    var day=document.getElementById('dt').value, time=document.getElementById('tm').value;
+    // record as a "requested" appointment on this device
+    var appts=LS.get('twc_appts',[]); appts.push({id:uid(),svc:svcId,name:nm,contact:ln,day:day,time:time,status:'req',created:Date.now()}); LS.set('twc_appts',appts);
+    document.getElementById('cSvc').textContent=(lang==='th'?s.th:s.en)+" — "+fmtBaht(s.price);
+    document.getElementById('cNm').textContent=nm;
+    document.getElementById('cWhen').textContent=fmtDate(day)+(time?"  ·  "+time:"");
+    document.getElementById('cLn').textContent=ln;
+    form.hidden=true; confirmEl.classList.add('show'); confirmEl.scrollIntoView({behavior:'smooth',block:'center'});
+    renderAppts();
+  });
+
+  /* ---------- seed sample data ---------- */
+  function seedIfEmpty(){
+    if(LS.raw('twc_seeded')==='1') return;
+    var t=todayISO();
+    LS.set('twc_appts',[
+      {id:uid(),svc:'whitecut',name:'Beer',contact:'@beer',day:t,time:'14:00',status:'conf',created:Date.now()-5e6},
+      {id:uid(),svc:'fade',name:'Nan',contact:'081-xxx-xxxx',day:t,time:'16:30',status:'req',created:Date.now()-4e6}
+    ]);
+    LS.set('twc_ledger',[
+      {id:uid(),date:t,kind:'in',memo:(lang==='th'?'ยอดยกมา':'Opening till'),amt:2000,method:'cash',created:Date.now()-9e6},
+      {id:uid(),date:t,kind:'in',memo:'Skin Fade — walk-in',amt:350,method:'promptpay',created:Date.now()-3e6},
+      {id:uid(),date:t,kind:'out',memo:(lang==='th'?'ใบมีด + น้ำมัน':'Blades & oil'),amt:220,method:'cash',created:Date.now()-2e6}
+    ]);
+    LS.set('twc_seeded','1'); // stored as JSON "1"
+    try{ localStorage.setItem('twc_seeded',JSON.stringify('1')); }catch(e){}
+  }
+  // seeded flag stored via LS.set as JSON; check accordingly
+  function isSeeded(){ return LS.get('twc_seeded','')==='1'; }
+  function doSeed(){ if(isSeeded()) return; var t=todayISO();
+    LS.set('twc_appts',[
+      {id:uid(),svc:'whitecut',name:'Beer',contact:'@beer',day:t,time:'14:00',status:'conf',created:Date.now()-5e6},
+      {id:uid(),svc:'fade',name:'Nan',contact:'081-234-5678',day:t,time:'16:30',status:'req',created:Date.now()-4e6}
+    ]);
+    LS.set('twc_ledger',[
+      {id:uid(),date:t,kind:'in',memo:'Opening till',amt:2000,method:'cash',created:Date.now()-9e6},
+      {id:uid(),date:t,kind:'in',memo:'Skin Fade — walk-in',amt:350,method:'promptpay',created:Date.now()-3e6},
+      {id:uid(),date:t,kind:'out',memo:'Blades & oil',amt:220,method:'cash',created:Date.now()-2e6}
+    ]);
+    LS.set('twc_seeded','1');
+  }
+  if(!isSeeded() && LS.get('twc_appts',null)===null && LS.get('twc_ledger',null)===null){ doSeed(); }
+
+  /* ---------- appointments render ---------- */
+  var STAT={ req:{en:'Requested',th:'ขอจอง',cls:'req'}, conf:{en:'Confirmed',th:'ยืนยันแล้ว',cls:'conf'}, done:{en:'Done',th:'เสร็จ',cls:'done'} };
+  function renderAppts(){
+    var list=document.getElementById('apList'); if(!list) return;
+    var a=LS.get('twc_appts',[]).slice();
+    a.sort(function(x,y){ return (x.day+ (x.time||'')).localeCompare(y.day+(y.time||'')); });
+    if(!a.length){ list.innerHTML='<div class="empty" data-en="No appointments yet." data-th="ยังไม่มีนัด">'+(lang==='th'?'ยังไม่มีนัด':'No appointments yet.')+'</div>'; return; }
+    var h="";
+    a.forEach(function(ap){
+      var s=SVC[ap.svc]||{en:ap.svc,th:ap.svc,price:0};
+      var st=STAT[ap.status]||STAT.req;
+      h+='<div class="row ap-grid">';
+      h+='<span class="when">'+fmtDate(ap.day)+'<br>'+(ap.time||'')+'</span>';
+      h+='<span><span class="who">'+esc(ap.name||'')+'</span><br><span class="svc">'+(lang==='th'?s.th:s.en)+' · '+fmtBaht(s.price)+(ap.contact?' · '+esc(ap.contact):'')+'</span></span>';
+      h+='<span><span class="pill '+st.cls+'">'+(lang==='th'?st.th:st.en)+'</span></span>';
+      h+='<span class="rowacts">';
+      if(ap.status==='req') h+='<button data-act="conf" data-id="'+ap.id+'">'+(lang==='th'?'ยืนยัน':'Confirm')+'</button>';
+      if(ap.status!=='done') h+='<button data-act="done" data-id="'+ap.id+'">'+(lang==='th'?'เสร็จ+ลงเงิน':'Done + bill')+'</button>';
+      h+='<button class="danger" data-act="del" data-id="'+ap.id+'">✕</button>';
+      h+='</span></div>';
+    });
+    list.innerHTML=h;
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  document.getElementById('apList').addEventListener('click',function(ev){
+    var b=ev.target.closest('button'); if(!b) return;
+    var id=b.getAttribute('data-id'), act=b.getAttribute('data-act');
+    var a=LS.get('twc_appts',[]); var i=a.findIndex(function(x){return x.id===id;}); if(i<0) return;
+    if(act==='conf'){ a[i].status='conf'; }
+    else if(act==='done'){ a[i].status='done';
+      var s=SVC[a[i].svc]; if(s){ var lg=LS.get('twc_ledger',[]); lg.push({id:uid(),date:a[i].day||todayISO(),kind:'in',memo:(s.en)+' — '+(a[i].name||''),amt:s.price,method:'cash',created:Date.now()}); LS.set('twc_ledger',lg); }
+    }
+    else if(act==='del'){ a.splice(i,1); }
+    LS.set('twc_appts',a); renderAppts(); renderLedger();
+  });
+
+  document.getElementById('apAdd').addEventListener('click',function(){
+    var day=document.getElementById('apDay').value||todayISO();
+    var time=document.getElementById('apTime').value;
+    var name=document.getElementById('apName').value.trim();
+    var svc=document.getElementById('apSvc').value;
+    if(!name){ document.getElementById('apName').focus(); return; }
+    var a=LS.get('twc_appts',[]); a.push({id:uid(),svc:svc,name:name,contact:'',day:day,time:time,status:'conf',created:Date.now()}); LS.set('twc_appts',a);
+    document.getElementById('apName').value=''; renderAppts();
+  });
+
+  /* ---------- ledger render ---------- */
+  function renderLedger(){
+    var list=document.getElementById('lgList'); if(!list) return;
+    var lg=LS.get('twc_ledger',[]).slice();
+    lg.sort(function(x,y){ var d=(x.date||'').localeCompare(y.date||''); return d!==0?d:(x.created-y.created); });
+    var bal=0, inT=0, outT=0, t=todayISO();
+    var h="";
+    lg.forEach(function(r){
+      bal += (r.kind==='in'? r.amt : -r.amt);
+      if(r.date===t){ if(r.kind==='in') inT+=r.amt; else outT+=r.amt; }
+      h+='<div class="row lg-grid">';
+      h+='<span class="when">'+fmtDate(r.date)+'</span>';
+      h+='<span>'+esc(r.memo||'')+' <span class="svc">· '+methodLabel(r.method)+'</span></span>';
+      h+='<span class="num in">'+(r.kind==='in'?fmtBaht(r.amt):'')+'</span>';
+      h+='<span class="num out">'+(r.kind==='out'?fmtBaht(r.amt):'')+'</span>';
+      h+='<span class="bal">'+fmtBaht(bal)+' <button class="danger" data-id="'+r.id+'" style="border:none;background:none;color:var(--steel);cursor:pointer;font-family:var(--fmono)">✕</button></span>';
+      h+='</div>';
+    });
+    if(!lg.length) h='<div class="empty">'+(lang==='th'?'ยังไม่มีรายการ':'Nothing written yet.')+'</div>';
+    list.innerHTML=h;
+    document.getElementById('tIn').textContent=fmtBaht(inT);
+    document.getElementById('tOut').textContent=fmtBaht(outT);
+    document.getElementById('tNet').textContent=fmtBaht(inT-outT);
+    document.getElementById('tBal').textContent=fmtBaht(bal);
+  }
+  function methodLabel(m){ var map={cash:{en:'Cash',th:'เงินสด'},promptpay:{en:'PromptPay',th:'พร้อมเพย์'},card:{en:'Card',th:'บัตร'}}; var o=map[m]; return o?(lang==='th'?o.th:o.en):(m||''); }
+
+  document.getElementById('lgList').addEventListener('click',function(ev){
+    var b=ev.target.closest('button'); if(!b) return;
+    var id=b.getAttribute('data-id'); var lg=LS.get('twc_ledger',[]); var i=lg.findIndex(function(x){return x.id===id;});
+    if(i>=0){ lg.splice(i,1); LS.set('twc_ledger',lg); renderLedger(); }
+  });
+
+  document.getElementById('lgAdd').addEventListener('click',function(){
+    var day=document.getElementById('lgDay').value||todayISO();
+    var memo=document.getElementById('lgMemo').value.trim();
+    var amt=parseFloat(document.getElementById('lgAmt').value)||0;
+    var kind=document.getElementById('lgKind').value;
+    var method=document.getElementById('lgMethod').value;
+    if(amt<=0){ document.getElementById('lgAmt').focus(); return; }
+    if(!memo) memo=(lang==='th'?'รายการ':'Item');
+    var lg=LS.get('twc_ledger',[]); lg.push({id:uid(),date:day,kind:kind,memo:memo,amt:amt,method:method,created:Date.now()}); LS.set('twc_ledger',lg);
+    document.getElementById('lgMemo').value=''; document.getElementById('lgAmt').value=''; renderLedger();
+  });
+
+  /* ---------- tabs ---------- */
+  function tab(which){
+    var a=which==='appt';
+    document.getElementById('tabAppt').setAttribute('aria-selected',a?'true':'false');
+    document.getElementById('tabBooks').setAttribute('aria-selected',a?'false':'true');
+    document.getElementById('panelAppt').classList.toggle('show',a);
+    document.getElementById('panelBooks').classList.toggle('show',!a);
+  }
+  document.getElementById('tabAppt').addEventListener('click',function(){tab('appt');});
+  document.getElementById('tabBooks').addEventListener('click',function(){tab('books');});
+
+  /* ---------- seed banner / clear ---------- */
+  function refreshSeedNote(){ document.getElementById('seedNote').style.display=isSeeded()?'flex':'none'; }
+  document.getElementById('clearSeed').addEventListener('click',function(){
+    LS.set('twc_appts',[]); LS.set('twc_ledger',[]); try{ localStorage.removeItem('twc_seeded'); }catch(e){}
+    renderAppts(); renderLedger(); refreshSeedNote();
+  });
+
+  /* ---------- backup ---------- */
+  document.getElementById('btnExport').addEventListener('click',function(){
+    var data=JSON.stringify({appts:LS.get('twc_appts',[]),ledger:LS.get('twc_ledger',[])});
+    var box=document.getElementById('backupBox'); box.value=data; box.select();
+    var msg=document.getElementById('shopMsg');
+    var ok=function(){ msg.textContent=(lang==='th'?'✓ คัดลอกแล้ว วางเก็บไว้ที่ปลอดภัย':'✓ Copied — paste it somewhere safe'); };
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(data).then(ok).catch(function(){ msg.textContent=(lang==='th'?'เลือกข้อความแล้ว กด ⌘/Ctrl+C':'Selected — press ⌘/Ctrl+C'); }); }
+    else msg.textContent=(lang==='th'?'เลือกข้อความแล้ว กด ⌘/Ctrl+C':'Selected — press ⌘/Ctrl+C');
+  });
+  document.getElementById('btnImport').addEventListener('click',function(){
+    var msg=document.getElementById('shopMsg');
+    try{ var d=JSON.parse(document.getElementById('backupBox').value);
+      if(d && Array.isArray(d.appts) && Array.isArray(d.ledger)){ LS.set('twc_appts',d.appts); LS.set('twc_ledger',d.ledger); LS.set('twc_seeded','1'); renderAppts(); renderLedger(); refreshSeedNote(); msg.textContent=(lang==='th'?'✓ โหลดข้อมูลแล้ว':'✓ Loaded'); }
+      else msg.textContent=(lang==='th'?'รูปแบบไม่ถูกต้อง':'That doesn’t look right');
+    }catch(e){ msg.textContent=(lang==='th'?'อ่านข้อมูลไม่ได้':'Could not read that'); }
+  });
+
+  /* ---------- shop open/close + gate ---------- */
+  var shop=document.getElementById('shop'), gate=document.getElementById('gate'), office=document.getElementById('office');
+  function openShop(){
+    shop.classList.add('show'); shop.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+    if(sessionStorage.getItem('twc_staff')==='1'){ unlock(); } else { gate.hidden=false; office.hidden=true; document.getElementById('pin').focus(); }
+  }
+  function closeShop(){ shop.classList.remove('show'); shop.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(location.hash==='#shop'){ history.replaceState(null,'',location.pathname+location.search); } }
+  function unlock(){
+    gate.hidden=true; office.hidden=false;
+    document.getElementById('apDay').value=todayISO();
+    document.getElementById('lgDay').value=todayISO();
+    refreshSeedNote(); renderAppts(); renderLedger();
+  }
+  document.getElementById('staffLink').addEventListener('click',function(e){ e.preventDefault(); location.hash='#shop'; openShop(); });
+  document.getElementById('shopClose').addEventListener('click',closeShop);
+  document.getElementById('pinBtn').addEventListener('click',checkPin);
+  document.getElementById('pin').addEventListener('keydown',function(e){ if(e.key==='Enter') checkPin(); });
+  function checkPin(){
+    var v=document.getElementById('pin').value.trim();
+    if(v==='1122'){ try{sessionStorage.setItem('twc_staff','1');}catch(e){} document.getElementById('gateErr').textContent=''; unlock(); }
+    else{ document.getElementById('gateErr').textContent=(lang==='th'?'รหัสไม่ถูกต้อง':'Wrong PIN'); }
+  }
+  window.addEventListener('hashchange',function(){ if(location.hash==='#shop') openShop(); else if(shop.classList.contains('show')) closeShop(); });
+
+  /* ---------- boot ---------- */
+  applyLang();
+  if(location.hash==='#shop') openShop();
+})();
+</script>
